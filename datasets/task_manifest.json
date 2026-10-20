@@ -1,0 +1,13 @@
+[
+  {
+    "task_id": "second-largest-distinct",
+    "title": "Find the second-largest distinct integer",
+    "description": "Fix the function so it returns the second-largest distinct number in a list.",
+    "category": "boundary-condition",
+    "language": "python",
+    "fixture_reference": "tasks/second_largest_distinct",
+    "test_command": "python -m pytest tasks/second_largest_distinct/tests",
+    "expected_behavior": "Return the second-largest distinct integer; raise ValueError if fewer than two distinct values are present.",
+    "split": "development"
+  }
+]
