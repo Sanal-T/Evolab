@@ -3,6 +3,7 @@
 import argparse
 from pathlib import Path
 
+from evolab.agent.orchestrator import Agent, ExamplePlanner
 from evolab.tasks import load_tasks
 from evolab.tools.registry import ToolError, ToolRegistry
 
@@ -29,6 +30,10 @@ def main() -> None:
     test_command = commands.add_parser("run-tests", help="Run a task's approved tests")
     test_command.add_argument("task_id")
     test_command.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
+    demo_command = commands.add_parser("run-demo", help="Run the offline baseline demonstration")
+    demo_command.add_argument("task_id")
+    demo_command.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
+    demo_command.add_argument("--max-actions", type=int, default=8)
     args = parser.parse_args()
 
     if args.command == "list-tasks":
@@ -50,6 +55,20 @@ def main() -> None:
         if result.timed_out:
             print("Test run exceeded the time limit.")
         if not result.passed:
+            raise SystemExit(1)
+    elif args.command == "run-demo":
+        task = find_task(args.manifest, args.task_id)
+        tools = ToolRegistry(PROJECT_ROOT, task)
+        summary = Agent(ExamplePlanner(), tools, max_actions=args.max_actions).run(task)
+        for event in summary.events:
+            print(f"[{event.action}] {event.observation}")
+        print(
+            f"\nRun summary: success={summary.success}, "
+            f"actions={summary.actions_used}/{args.max_actions}, "
+            f"reason={summary.termination_reason}"
+        )
+        print("Note: this offline demonstration uses a fixed plan, not an LLM.")
+        if not summary.success:
             raise SystemExit(1)
 
 

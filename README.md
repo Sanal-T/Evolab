@@ -38,6 +38,14 @@ python -m evolab run-tests second-largest-distinct
 
 The first run is expected to fail because the starter implementation is intentionally incorrect. The runner uses a fixed pytest invocation and a 30-second timeout. It is not an operating-system sandbox, so only run reviewed task fixtures.
 
+## Run the offline baseline demo
+
+```powershell
+python -m evolab run-demo second-largest-distinct
+```
+
+The demo lists and reads the task source, applies one exact edit, runs the fixture tests, and reports success only when those tests pass. It edits a temporary copy, so the original example remains broken and can be run again. The planner currently follows a fixed sequence for this one task; the LLM connection comes later.
+
 ## Current limitations
 
-There is not yet an LLM client or an agent loop. At this stage, the project can load tasks, inspect approved source files, and run a task's tests.
+There is not yet an LLM client, persistent run history, or general-purpose planner. At this stage, the project can load tasks and run a bounded, fixed demonstration on one curated fixture.

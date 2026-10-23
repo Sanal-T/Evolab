@@ -1,6 +1,6 @@
 import pytest
 
-from tasks.second_largest_distinct.solution import second_largest
+from solution import second_largest
 
 
 def test_returns_second_largest_distinct_value():
