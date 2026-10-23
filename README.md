@@ -21,3 +21,23 @@ python -m evolab list-tasks
 ```
 
 The first fixture asks for the second-largest distinct integer. Its current implementation has a bug; its tests describe the expected behavior.
+
+## Inspect a task
+
+```powershell
+python -m evolab inspect-task second-largest-distinct
+```
+
+This shows the fixture's source files. The inspection tool hides its `tests` directory and prevents paths from escaping the fixture.
+
+## Run a task's tests
+
+```powershell
+python -m evolab run-tests second-largest-distinct
+```
+
+The first run is expected to fail because the starter implementation is intentionally incorrect. The runner uses a fixed pytest invocation and a 30-second timeout. It is not an operating-system sandbox, so only run reviewed task fixtures.
+
+## Current limitations
+
+There is not yet an LLM client or an agent loop. At this stage, the project can load tasks, inspect approved source files, and run a task's tests.
